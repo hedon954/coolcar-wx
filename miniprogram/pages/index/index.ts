@@ -71,7 +71,9 @@ Page({
     this.isPageShowing = false
   },
 
-  // 获取当前位置
+  /**
+   * 获取当前位置
+   */
   onMyLocationTap () {
     wx.getLocation({
       type: 'gcj02',
@@ -93,7 +95,9 @@ Page({
     })
   },
 
-  // 扫码租车
+  /**
+   * 扫码租车
+   */
   onScanClicked() {
     wx.scanCode({
       success: res => {
@@ -107,7 +111,9 @@ Page({
     })
   },
 
-
+  /**
+   * 移动汽车
+   */
   moveCars() {
     // 拿到 map 对象
     const map = wx.createMapContext("map")
@@ -139,5 +145,15 @@ Page({
       })
     }
     moveCar()
-  }
+  },
+
+  /**
+   * 我的行程
+   */
+  onMyTripsTap() {
+    wx.navigateTo({
+      url: '/pages/mytrips/mytrips',
+    })
+  },
+
 })

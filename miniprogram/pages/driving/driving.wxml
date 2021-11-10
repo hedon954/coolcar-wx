@@ -6,7 +6,7 @@
             <!--计时-->
             <view class="time">
                 <text class="cuIcon-timefill"></text>
-                <text class="time-driven">{{duration}}</text>
+                <text class="time-driven">{{durationFormatted}}</text>
             </view>
             <!--计费-->
             <view class="charge margin-top-sm">

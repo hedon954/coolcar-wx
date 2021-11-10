@@ -1,12 +1,19 @@
-// pages/driving/driving.ts
+import {formatDuration} from '../../utils/formatDuration'
+import {formartCharge} from '../../utils/formatCharge'
+
+// 一秒一分
+const centPerSec = 1
+
 Page({
+
+    timer: undefined as number | undefined,
 
     /**
      * 页面的初始数据
      */
     data: {
-        charge: 12.34,
-        duration: '01:23:12',
+        charge: '0.00',
+        durationFormatted: '00:00:00',
         location: {
             latitude: 32.92,
             longitude: 118.46
@@ -17,14 +24,16 @@ Page({
 
     onLoad() {
         this.setupLocationUpdator()
+        this.setupTimer()
     },
 
     onUnload() {
-        wx.startLocationUpdate()
+        wx.stopLocationUpdate()
+        this.stopTimer()
     },
 
     /**
-     * 更新当前地图位置
+     * 实时根据当前位置更新当前地图位置
      */
     setupLocationUpdator() {
         wx.startLocationUpdate({
@@ -39,6 +48,31 @@ Page({
                 }
             })
         })
+    },
+
+    /**
+     * 计时计费
+     */
+    setupTimer() {
+        let durationSec = 0
+        let cents = 0
+        this.timer = setInterval(() => {
+            durationSec += 1
+            cents += centPerSec
+            this.setData({
+                durationFormatted: formatDuration(durationSec),
+                charge: formartCharge(cents)
+            })
+        }, 1000)
+    },
+
+    /**
+     * 关闭计费
+     */
+    stopTimer() {
+        if(this.timer) {
+            clearInterval(this.timer)
+        }
     }
-    
+
 })
