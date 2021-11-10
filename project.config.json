@@ -41,14 +41,19 @@
         "packNpmRelationList": [],
         "minifyWXSS": true,
         "disableUseStrict": false,
+        "minifyWXML": true,
         "showES6CompileOption": false,
         "useCompilerPlugins": [
             "typescript"
-        ],
-        "minifyWXML": true
+        ]
     },
     "simulatorType": "wechat",
     "simulatorPluginLibVersion": {},
     "appid": "wx2f9adc3f3ef8f540",
+    "scripts": {
+        "beforeCompile": "",
+        "beforePreview": "",
+        "beforeUpload": ""
+    },
     "condition": {}
 }

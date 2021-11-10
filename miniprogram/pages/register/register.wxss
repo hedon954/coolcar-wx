@@ -1,0 +1,50 @@
+@import "/colorui/icon.wxss";
+@import "/colorui/main.wxss";
+
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.lic-tmpl {
+    width: 600rpx;
+    height: 450rpx;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.strecth {
+    width: 100%;
+    height: 100%;
+}
+
+.lic-tmpl-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: .2;
+}
+
+.cameraIcon {
+    font-size: 172rpx;
+}
+
+.instruction {
+    position: absolute;
+    bottom: -72rpx;
+}
+
+.lic-form {
+    width: 600rpx;
+}
+
+.cu-form-group .title {
+    min-width: calc(4em + 30rpx);
+}

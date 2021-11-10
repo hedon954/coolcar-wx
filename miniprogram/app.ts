@@ -1,18 +1,26 @@
+
+const userInfoKey = 'userinfo'
+
 // app.ts
 App<IAppOption>({
-  globalData: {},
-  onLaunch() {
-    // 展示本地存储能力
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    // 登录
-    wx.login({
-      success: res => {
-        console.log(res.code)
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      },
-    })
+  globalData: {
+    userInfo: undefined as WechatMiniprogram.UserInfo | undefined
   },
+  
+  onLaunch() {
+    const userInfo = wx.getStorageSync(userInfoKey) || undefined
+    if(!userInfo) {
+      // 获取用户信息
+      wx.getUserInfo({
+        success: (res:any) => {
+          const userInfo = res.userInfo
+          if(userInfo && userInfo.nickName !== '微信用户'){
+            wx.setStorageSync(userInfoKey, res.userInfo)
+          }
+        }
+      })
+    }
+    this.globalData.userInfo = userInfo
+  },
+
 })

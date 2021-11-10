@@ -2,48 +2,142 @@
 // 获取应用实例
 const app = getApp<IAppOption>()
 
+const defaultAvatar = '/resources/car.png'
+const initialLat = 23.099994
+const initialLng = 114.324520
+
 Page({
+  isPageShowing: false,
   data: {
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    canIUseGetUserProfile: false,
-    canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
+    avatarURL: '',
+    setting: {
+      skew: 0,
+      rotate: 0,
+      showLocation: true,
+      showScale: true,
+      subKey: '',
+      enableZoom: true,
+      enableScroll: true,
+      enableRotate: false,
+      showCompass: false,
+      enable3D: false,
+      enableOverlooking: false,
+      enableSatellite: false,
+      enableTraffic: false,
+    },
+    location: {
+      latitude: initialLat,
+      longitude: initialLng,
+    },
+    scale: 16,
+    markers: [
+      {
+        iconPath: defaultAvatar,
+        id: 0,
+        latitude: 23.099994,
+        longitude: 113.394520,
+        width: 50,
+        height: 50
+      },
+      {
+        iconPath: defaultAvatar,
+        id: 0,
+        latitude: 23.099994,
+        longitude: 112.324520,
+        width: 50,
+        height: 50
+      }
+    ],
   },
-  // 事件处理函数
-  bindViewTap() {
-    wx.navigateTo({
-      url: '../logs/logs',
+
+  onLoad(){
+    const userInfo = app.globalData.userInfo
+    this.setData({
+      avatarURL: userInfo?.avatarUrl || ''
     })
   },
-  onLoad() {
-    // @ts-ignore
-    if (wx.getUserProfile) {
+
+  onShow() {
+    this.isPageShowing = true
+    if(this.data.avatarURL === '') {
+      const userInfo = app.globalData.userInfo
       this.setData({
-        canIUseGetUserProfile: true
+        avatarURL: userInfo?.avatarUrl || ''
       })
     }
   },
-  getUserProfile() {
-    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    wx.getUserProfile({
-      desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+
+  onHide() {
+    this.isPageShowing = false
+  },
+
+  // 获取当前位置
+  onMyLocationTap () {
+    wx.getLocation({
+      type: 'gcj02',
       success: (res) => {
-        console.log(res)
         this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
+          location: {
+            latitude: res.latitude,
+            longitude: res.longitude,
+          }
+        })
+      },
+      fail: () => {
+        wx.showToast({
+          title: '请前往设置页授权地理位置',
+          icon: 'error',
+          duration: 2000
         })
       }
     })
   },
-  getUserInfo(e: any) {
-    // 不推荐使用getUserInfo获取用户信息，预计自2021年4月13日起，getUserInfo将不再弹出弹窗，并直接返回匿名的用户个人信息
-    console.log(e)
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
+
+  // 扫码租车
+  onScanClicked() {
+    wx.scanCode({
+      success: res => {
+        wx.navigateTo({
+          url: '/pages/register/register'
+        })
+      },
+      fail: error => {
+        console.log(error)
+      }
     })
+  },
+
+
+  moveCars() {
+    // 拿到 map 对象
+    const map = wx.createMapContext("map")
+    let dest = {
+      latitude: 23.099994,
+      longitude: 114.324520,
+    }
+
+    // 调用 map 的 api 来修改汽车位置
+    // 效率更高
+    const moveCar = () => {
+
+      dest.latitude += 0.1,
+      dest.longitude += 0.1,
+
+      map.translateMarker({
+        destination: {
+          latitude: dest.latitude,
+          longitude: dest.longitude,        
+        },
+        markerId: 0,
+        autoRotate: false,
+        rotate: 0,
+        animationEnd: () => {
+          if(this.isPageShowing) {
+            moveCar()
+          }
+        },
+      })
+    }
+    moveCar()
   }
 })

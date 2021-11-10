@@ -1,0 +1,56 @@
+@import "/colorui/icon.wxss";
+@import "/colorui/main.wxss";
+
+
+page {
+    width: 100%;
+    height: 100%;
+}
+
+
+.container{
+    width: 100%;
+    height: 100%;
+}
+
+.lock-prompt {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.lock-prompt image {
+    width: 680rpx;
+}
+
+.avatar {
+    width: 100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.unlock-btn {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    bottom: 150rpx;
+}
+
+.unlock-btn-wid {
+    height: 80rpx;
+    width: 600rpx;
+    font-size: large;
+    background-color: gray;
+}
+
+.avatar-switch-container {
+    display: flex;
+    align-items: center;
+    width: 8em;
+}
