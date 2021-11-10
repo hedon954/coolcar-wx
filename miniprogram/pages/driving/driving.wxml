@@ -1,0 +1,35 @@
+<view class="container">
+
+    <!--计时计费-->
+    <view class="pannel padding-bottom-lg">
+        <view class="payment margin-top-lg">
+            <!--计时-->
+            <view class="time">
+                <text class="cuIcon-timefill"></text>
+                <text class="time-driven">{{duration}}</text>
+            </view>
+            <!--计费-->
+            <view class="charge margin-top-sm">
+                <text>费用：{{charge}} 元</text>
+            </view>
+        </view>
+
+        <button style="width:70%" class="cu-btn bg-red margin-tb-sm lg" bindtap="onEndTripTap">
+            结束行程
+        </button>
+
+    </view>
+
+
+    <map
+        id="map"
+        latitude="{{location.latitude}}"
+        longitude="{{location.longitude}}"
+        show-location
+        scale="{{scale}}"
+        markers="{{markers}}"
+    />
+
+
+</view>
+

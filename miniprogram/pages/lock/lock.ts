@@ -8,6 +8,7 @@ Page({
     data: {
         shareLocation: false,
         avatarURL: '',
+        carID: '000'
     },
 
     /**
@@ -51,51 +52,43 @@ Page({
     },
 
     /**
-     * 生命周期函数--监听页面初次渲染完成
+     * 开锁汽车
      */
-    onReady() {
+    onUnlockCarTap() {
+        // 获取当前位置
+        wx.getLocation({
+            type: 'gcj02',
+            success: loc => {
+                // TODO: 发送当前位置信息给后端
+                console.log('starting a trip', {
+                    location: {
+                        latitude: loc.latitude,
+                        longitude: loc.longitude
+                    },
+                    avatarURL: this.data.shareLocation ? this.data.avatarURL : '',
+                    carID: this.data.carID,
+                })
 
-    },
-
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow() {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide() {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload() {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh() {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom() {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage() {
-
+                wx.showLoading({
+                    title: '开锁中',
+                    mask: true
+                })
+                setTimeout(() => {
+                    wx.redirectTo({
+                        url: '/pages/driving/driving',
+                        complete: () => {
+                            wx.hideLoading()
+                        }
+                    })
+                }, 2000);
+            },
+            fail: () => {
+                wx.showToast({
+                    icon: "error",
+                    title: "请授权位置信息"
+                })
+            }
+        })
+        
     }
 })

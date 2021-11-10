@@ -28,7 +28,7 @@
 
     <!--开锁按钮-->
     <view class="unlock-btn">
-        <button class="cu-btn bg-grey lg" style="width: 600rpx;" role="button"> 
+        <button class="cu-btn bg-grey lg" style="width: 600rpx;" role="button" bindtap="onUnlockCarTap"> 
             立即开锁
         </button>
     </view>
