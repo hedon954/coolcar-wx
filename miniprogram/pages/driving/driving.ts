@@ -22,7 +22,8 @@ Page({
     },
 
 
-    onLoad() {
+    onLoad(opt) {
+        console.log('driving pages, tripID: ' + opt.trip_id)
         this.setupLocationUpdator()
         this.setupTimer()
     },

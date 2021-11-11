@@ -14,7 +14,10 @@ Page({
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad() {
+    onLoad(opt) {
+        // 获取 carID
+        const carID = opt.car_id
+        console.log('lock pages, carID: ' + carID)
         const userInfo = getApp<IAppOption>().globalData.userInfo
         if(userInfo) {
             this.setData({
@@ -28,7 +31,6 @@ Page({
      * 获取用户信息
      */
     onGetUserInfo(e: any) {
-        console.log(e)
         const userInfo: WechatMiniprogram.UserInfo = e.detail.userInfo
         if(userInfo && userInfo.nickName !== '微信用户') {
             this.setData({
@@ -69,13 +71,16 @@ Page({
                     carID: this.data.carID,
                 })
 
+                // 创建行程
+                const tripID = 'trip456'
+
                 wx.showLoading({
                     title: '开锁中',
                     mask: true
                 })
                 setTimeout(() => {
                     wx.redirectTo({
-                        url: '/pages/driving/driving',
+                        url: `/pages/driving/driving?trp_id=${tripID}`,
                         complete: () => {
                             wx.hideLoading()
                         }

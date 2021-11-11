@@ -98,11 +98,14 @@ Page({
   /**
    * 扫码租车
    */
-  onScanClicked() {
+  onScanTap() {
     wx.scanCode({
       success: res => {
+        // TODO: get car id from scan result
+        const carID = 'car123'
+        const redirectURL = `/pages/lock/lock?car_id=${carID}`
         wx.navigateTo({
-          url: '/pages/register/register'
+          url: `/pages/register/register?redirect=${encodeURIComponent(redirectURL)}`
         })
       },
       fail: error => {

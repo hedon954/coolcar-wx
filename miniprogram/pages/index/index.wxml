@@ -19,7 +19,7 @@
   </cover-view>
 
   <!--扫码租车-->
-  <cover-view class="btn-container round bg-grey" bindtap="onScanClicked">
+  <cover-view class="btn-container round bg-grey" bindtap="onScanTap">
     <cover-view>扫码租车</cover-view>
   </cover-view>
 </map>

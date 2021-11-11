@@ -5,6 +5,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        redirectURL: '',
         genders: ['未知', '男', '女', '其他'],
         genderIndex: 0,
         licNo: '',
@@ -12,6 +13,14 @@ Page({
         birthday: '1990-01-01',
         checkState: 'UNSUBMITTED' as 'UNSUBMITTED' | 'PENDING' | 'SUCCESS' | 'FAILED',  /** UNSUBMITTED 递交申请，PENDING 审查中，SUCCESS 审查通过，FAILED 审查失败 */
         licImgURL: undefined as string | undefined,
+    },
+
+    onLoad(opt) {
+        if(opt.redirect){
+            this.setData({
+                redirectURL: decodeURIComponent(opt.redirect)
+            })
+        }
     },
 
     /**
@@ -75,10 +84,12 @@ Page({
         this.setData({
             checkState: rand > 0.5 ? 'SUCCESS' : 'FAILED'
         })
-        // 跳转到开锁界面
-        wx.redirectTo({
-            url: '/pages/lock/lock'
-        })
+        if(this.data.redirectURL) {
+            // 跳转到开锁界面
+            wx.redirectTo({
+                url: this.data.redirectURL
+            })
+        }
     },
 
     /**
@@ -90,25 +101,4 @@ Page({
             licImgURL: ''
         })
     },
- 
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onLoad() {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady() {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow() {
-
-    }
 })
