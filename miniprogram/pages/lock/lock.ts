@@ -1,3 +1,5 @@
+import { routing } from "../../utils/routing"
+
 const shareLocationKey = "share_location"
 
 Page({
@@ -14,10 +16,10 @@ Page({
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad(opt) {
+    onLoad(opt: Record<'car_id', string>) {
         // 获取 carID
-        const carID = opt.car_id
-        console.log('lock pages, carID: ' + carID)
+        const o: routing.LockOpts = opt
+        console.log('lock pages, carID: ' + o.car_id)
         const userInfo = getApp<IAppOption>().globalData.userInfo
         if(userInfo) {
             this.setData({
@@ -80,7 +82,9 @@ Page({
                 })
                 setTimeout(() => {
                     wx.redirectTo({
-                        url: `/pages/driving/driving?trp_id=${tripID}`,
+                        url: routing.driving({
+                            trip_id: tripID
+                        }),
                         complete: () => {
                             wx.hideLoading()
                         }

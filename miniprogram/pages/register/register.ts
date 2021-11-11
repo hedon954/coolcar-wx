@@ -1,4 +1,5 @@
-// pages/register/register.ts
+import { routing } from "../../utils/routing"
+
 Page({
 
     /**
@@ -15,10 +16,11 @@ Page({
         licImgURL: undefined as string | undefined,
     },
 
-    onLoad(opt) {
-        if(opt.redirect){
+    onLoad(opt: Record<'redirect', string>) {
+        const o: routing.RegisterOpts = opt
+        if(o.redirect){
             this.setData({
-                redirectURL: decodeURIComponent(opt.redirect)
+                redirectURL: decodeURIComponent(o.redirect)
             })
         }
     },
