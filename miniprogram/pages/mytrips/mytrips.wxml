@@ -1,33 +1,84 @@
-<!--轮播器-->
-<swiper
-    indicator-dots="{{indicatorDots}}"
-    autoplay="{{autoPlay}}"
-    interval="{{interval}}"
-    duration="{{duration}}"
-    circular="{{circular}}"
-    display-multiple-items="{{multiItemCount}}"
-    previous-margin="{{prevMargin}}"
-    next-margin="{{nextMargin}}"
-    vertical="{{vertical}}"
-    current="{{current}}"
->
-    <swiper-item wx:for="{{promotionItems}}" wx:key="promotionID">
-        <image class="swiper-image" src="{{item.img}}" bindtap="onPromotionItemTap" data-promotion-id="{{item.promotionID}}"></image>
-    </swiper-item>
-</swiper>
+<view id="heading" class="padding-bottom-sm">
+    <!--轮播器-->
+    <swiper
+        indicator-dots="{{indicatorDots}}"
+        autoplay="{{autoPlay}}"
+        interval="{{interval}}"
+        duration="{{duration}}"
+        circular="{{circular}}"
+        display-multiple-items="{{multiItemCount}}"
+        previous-margin="{{prevMargin}}"
+        next-margin="{{nextMargin}}"
+        vertical="{{vertical}}"
+        current="{{current}}"
+    >
+        <swiper-item wx:for="{{promotionItems}}" wx:key="promotionID">
+            <image class="swiper-image" src="{{item.img}}" bindtap="onPromotionItemTap" data-promotion-id="{{item.promotionID}}"></image>
+        </swiper-item>
+    </swiper>
 
-<!--驾驶资格-->
-<view class="avatar-container margin-top margin-right-lg">
-
-    <view class="avatar margin-right">
-        <button wx:if="{{!avatarURL}}" class="cu-avatar round lg" open-type="getUserInfo" bindgetuserinfo="onGetUserInfoTap">
-            <text class="cuIcon-people"></text>
-        </button>
-
-        <image wx:if="{{avatarURL}}" class="cu-avatar round lg" src="{{avatarURL}}">
-        </image>
-    
+    <!--驾驶资格-->
+    <view class="avatar-container margin-top margin-right-lg">
+        <view class="text-xl mytrips-heading">
+            我的行程
+        </view>
+        <view class="avatar margin-right">
+            <button wx:if="{{!avatarURL}}" class="cu-avatar round lg" open-type="getUserInfo" bindgetuserinfo="onGetUserInfoTap">
+                <text class="cuIcon-people"></text>
+            </button>
+            <image wx:if="{{avatarURL}}" class="cu-avatar round lg" src="{{avatarURL}}">
+            </image>
+        </view>
+        <view class="text-red" bindtap="onRegisterTap">驾驶资格未认证</view>
     </view>
-    <view class="text-red" bindtap="onRegisterTap">驾驶资格未认证</view>
+</view>
+
+
+<view class="nav-container">
+
+    <!--行程列表-->
+    <scroll-view scroll-y="true" scroll-with-animation="true" enable-back-to-top="true"
+        style="height: {{tripsHeight}}px;"
+        scroll-into-view="{{mainScroll}}"
+        bindscroll="onMainScroll">
+        <view wx:for="{{trips}}" wx:key="id" class="trip"
+        class="bg-white margin-bottom margin-lr padding-bottom trip main-item" id="{{item.id}}">
+            <!--行程头-->
+            <view class="'cu-bar solid-bottom padding-right margin-bottom">
+                <!--行程号-->
+                <view class="action">
+                    <text class="cuIcon-title text-green">Trip-{{item.id}}</text>
+                </view>
+                <!--行程状态-->
+                <view>
+                    {{item.status}}
+                </view>
+            </view>
+            <!--行程详细信息-->
+            <view class="trip-detail padding-right">
+                <view class="detail-l">
+                    <view class="detail-row">
+                        <view class="field padding-lr">起</view>
+                        <view class="value text-black text-bold">{{item.start}}</view>                
+                    </view>
+                    <view class="detail-row">
+                        <view class="field padding-lr">终</view>
+                        <view class="value text-black text-bold">{{item.end}}</view>                
+                    </view>
+                    <view class="detail-row">
+                        <view class="field padding-lr">距</view>
+                        <view class="value text-black text-bold">{{item.distance}}</view>                
+                    </view>
+                    <view class="detail-row">
+                        <view class="field padding-lr">时</view>
+                        <view class="value text-black text-bold">{{item.duration}}</view>                
+                    </view>
+                </view>
+                <view class="detail-r">
+                    <view class="charge text-xxl text-price text-bold">{{item.charge}}</view>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
 
 </view>

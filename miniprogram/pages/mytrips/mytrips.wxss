@@ -18,3 +18,33 @@ swiper {
     align-items: center;
     justify-content: flex-end;
 }
+
+.nav-container {
+    display: flex;
+}
+
+.trip {
+    border-radius: 25rpx;
+}
+
+.trip-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detail-row {
+    display: flex;
+}
+
+.mytrips-heading{
+    position: absolute;
+    left: 50rpx;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.charge {
+    font-style: italic;
+}
+

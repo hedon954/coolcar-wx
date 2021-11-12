@@ -1,5 +1,15 @@
 import { routing } from "../../utils/routing"
 
+interface Trip {
+    id: string
+    start: string
+    end: string
+    duration: string
+    charge: string
+    distance: string
+    status: string
+}
+
 // pages/mytrips/mytrips.ts
 Page({
 
@@ -7,6 +17,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        tripsHeight: 0,
         avatarURL: '',
         indicatorDots: true,
         autoPlay: false,
@@ -39,12 +50,51 @@ Page({
                 promotionID: 4,
             }
         ],
+        trips: [] as Trip[],
     },
 
     onLoad() {
         const userInfo = getApp<IAppOption>().globalData.userInfo
         this.setData({
           avatarURL: userInfo?.avatarUrl || ''
+        })
+        this.populateTirps()
+    },
+
+    onReady() {
+        this.getTripsHeight()
+    },
+
+    /**
+     * 获取行程列表高度
+     */
+    getTripsHeight(){
+        wx.createSelectorQuery().select('#heading').boundingClientRect(rect =>{
+            this.setData({
+                tripsHeight: wx.getSystemInfoSync().windowHeight - rect.height
+            })
+        }).exec()
+    },
+
+    /**
+     * 获取行程
+     */
+    populateTirps() {
+        const trips: Trip[] = []
+        // TODO: get trips from backend
+        for(let i=0; i<100; i++){
+            trips.push({
+                id: (10001 + i).toString(),
+                start: '' + i,
+                end: '' + i,
+                duration: (10086 + i).toString() + " 秒",
+                charge: (4 + i).toFixed(2).toString(),
+                distance: (500.2 + i).toFixed(2).toString() + " 公里",
+                status: (i % 2 === 0) ? '已完成' : '未完成',
+            })
+        }
+        this.setData({
+            trips: trips
         })
     },
 
