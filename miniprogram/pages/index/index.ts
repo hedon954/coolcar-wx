@@ -51,6 +51,8 @@ Page({
         height: 50
       }
     ],
+    showCancel: true,
+    showModal: true,
   },
 
   onLoad(){
@@ -104,19 +106,28 @@ Page({
   onScanTap() {
     wx.scanCode({
       success: res => {
-        // TODO: get car id from scan result
-        const carID = 'car123'
-        const redirectURL = routing.lock({
-          car_id: carID
-        })
-        wx.navigateTo({
-          url: routing.register({
-            redirectURL: redirectURL
-          })
+        wx.showModal({
+          title: '身份认证',
+          content: '需要身份认证才能租车',
+          success: () => {
+            // TODO: get car id from scan result
+            const carID = 'car123'
+            const redirectURL = routing.lock({
+              car_id: carID
+            })
+            wx.navigateTo({
+              url: routing.register({
+                redirectURL: redirectURL
+              })
+            })
+          }
         })
       },
-      fail: error => {
-        console.log(error)
+      fail: () => {
+        wx.showToast({
+          title: '无效码',
+          icon: 'error'
+        })
       }
     })
   },
@@ -165,5 +176,4 @@ Page({
       url: routing.mytrips(),
     })
   },
-
 })
