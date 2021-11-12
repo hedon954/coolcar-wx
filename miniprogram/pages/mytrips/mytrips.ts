@@ -10,8 +10,34 @@ interface Trip {
     status: string
 }
 
+interface MainItem {
+    id: string,
+    navId: string,
+    navScrollId: string, 
+    data: Trip
+}
+
+interface NavItem {
+    id: string,
+    mainId: string,
+    label: string
+}
+
+interface MainItemQueryResult {
+    id: string,
+    top: number,
+    dataset: {
+        navId: string
+        navScrollId: string
+    }
+}
+
 // pages/mytrips/mytrips.ts
 Page({
+
+    scrollStates: {
+        mainItems: [] as MainItemQueryResult[]
+    },
 
     /**
      * 页面的初始数据
@@ -50,7 +76,13 @@ Page({
                 promotionID: 4,
             }
         ],
-        trips: [] as Trip[],
+        mainItems: [] as MainItem[],
+        mainScroll: '',
+        navItems: [] as NavItem[],
+        swiperDuration: 500,
+        navCount: 0,
+        navSelect: '',
+        navScroll: '',
     },
 
     onLoad() {
@@ -70,8 +102,10 @@ Page({
      */
     getTripsHeight(){
         wx.createSelectorQuery().select('#heading').boundingClientRect(rect =>{
+            const height = wx.getSystemInfoSync().windowHeight - rect.height
             this.setData({
-                tripsHeight: wx.getSystemInfoSync().windowHeight - rect.height
+                tripsHeight: height,
+                navCount: Math.round(height / 50)
             })
         }).exec()
     },
@@ -80,21 +114,49 @@ Page({
      * 获取行程
      */
     populateTirps() {
-        const trips: Trip[] = []
+        const mainItems: MainItem[] = []
+        const navItems: NavItem[] = []
+        let preNav = ''
         // TODO: get trips from backend
         for(let i=0; i<100; i++){
-            trips.push({
-                id: (10001 + i).toString(),
-                start: '' + i,
-                end: '' + i,
-                duration: (10086 + i).toString() + " 秒",
-                charge: (4 + i).toFixed(2).toString(),
-                distance: (500.2 + i).toFixed(2).toString() + " 公里",
-                status: (i % 2 === 0) ? '已完成' : '未完成',
+            const mainId = 'main-' + i
+            const navId = 'nav-' + i
+            const tripId = (10001 + i).toString()
+            if(!preNav) {
+                preNav = navId
+            }
+            mainItems.push({
+                id: mainId ,
+                navId: navId,
+                navScrollId: preNav,
+                data: {
+                    id: tripId,
+                    start: '' + i,
+                    end: '' + i,
+                    duration: (10086 + i).toString() + " 秒",
+                    charge: (4 + i).toFixed(2).toString(),
+                    distance: (500.2 + i).toFixed(2).toString() + " 公里",
+                    status: (i % 2 === 0) ? '已完成' : '未完成',
+                }
             })
+            navItems.push({
+                id: navId,
+                mainId: mainId, 
+                label: tripId,
+            })
+            preNav = navId
+        }
+        var navSel = ''
+        if(navItems.length > 0) {
+            navSel = navItems[0].id
         }
         this.setData({
-            trips: trips
+            mainItems: mainItems,
+            navItems: navItems,
+            navSelect: navSel
+        }, () => {
+            // 存下所有 mainItem 的高度
+            this.prepareScrollStates()
         })
     },
 
@@ -136,8 +198,56 @@ Page({
                 redirectURL: ''
             })
         })
-    }
+    },
 
 
-    
+    /**
+     * 点击 navItem，右边的列表对应移动
+     */
+    onNavItemTap(e: any){
+        const mainId: string = e.currentTarget?.dataset?.mainId
+        const navId: string = e.currentTarget?.id
+        if(mainId && navId){
+            this.setData({
+                mainScroll: mainId,
+                navSelect: navId
+            })
+        }
+    },
+
+    /**
+     * 存下所有 mainItem 的高度
+     */
+    prepareScrollStates() {
+        wx.createSelectorQuery().selectAll(".main-item")
+            .fields({
+                id: true,
+                dataset: true,
+                rect: true
+            }).exec( res => {
+                this.scrollStates.mainItems = res[0]
+            })
+    },
+
+
+    /**
+     * 滚动行程列表
+     *  1. 左边同步选择
+     *  2. 左边同步滚动
+     */
+    onMainScroll(e: any) {
+        const top:number = e.currentTarget?.offsetTop + e.detail?.scrollTop
+        if(top === undefined){
+            return
+        }
+        const selItem = this.scrollStates.mainItems.find(v => v.top >= top)
+        if(!selItem) {
+            return
+        }
+        this.setData({
+            navSelect: selItem.dataset.navId,
+            navScroll: selItem.dataset.navScrollId
+        })
+    },
+
 })

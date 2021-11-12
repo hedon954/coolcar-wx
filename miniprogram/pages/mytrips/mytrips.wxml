@@ -36,22 +36,53 @@
 
 <view class="nav-container">
 
+    <!--导航栏-->
+    <swiper
+        duration="{{swiperDuration}}"
+        display-multiple-items="{{navCount}}"
+        vertical="true"
+        style="height: {{tripsHeight}}px;"
+        class="bg-white nav"
+        current-item-id="{{navScroll}}"
+    >
+        <swiper-item
+            wx:for="{{navItems}}" wx:key="id" 
+            id="{{item.id}}"
+            item-id="{{item.id}}" 
+            data-main-id="{{item.mainId}}"
+            class="cu-item {{navSelect===item.id ? 'text-green':''}}"
+            bindtap="onNavItemTap"
+        >  
+            <view>{{item.label}}</view>
+            <view wx:if="{{navSelect===item.id}}" class="cur"></view>
+        </swiper-item>
+    
+    </swiper>
+
     <!--行程列表-->
-    <scroll-view scroll-y="true" scroll-with-animation="true" enable-back-to-top="true"
+    <scroll-view 
+        scroll-y="true" 
+        scroll-with-animation="true" 
+        enable-back-to-top="true"
         style="height: {{tripsHeight}}px;"
         scroll-into-view="{{mainScroll}}"
-        bindscroll="onMainScroll">
-        <view wx:for="{{trips}}" wx:key="id" class="trip"
-        class="bg-white margin-bottom margin-lr padding-bottom trip main-item" id="{{item.id}}">
+        bindscroll="onMainScroll"
+    >
+        <view wx:for="{{mainItems}}" wx:key="id" class="trip"
+            class="bg-white margin-bottom margin-lr padding-bottom trip main-item" 
+            id="{{item.id}}"
+            data-nav-id="{{item.navId}}"
+            data-nav-scroll-id="{{item.navScrollId}}"
+        >
             <!--行程头-->
             <view class="'cu-bar solid-bottom padding-right margin-bottom">
                 <!--行程号-->
                 <view class="action">
-                    <text class="cuIcon-title text-green">Trip-{{item.id}}</text>
+                    <text class="cuIcon-title text-green">Trip-{{item.data.id}}</text>
                 </view>
                 <!--行程状态-->
                 <view>
-                    {{item.status}}
+                    {{item.data.status}}
                 </view>
             </view>
             <!--行程详细信息-->
@@ -59,23 +90,23 @@
                 <view class="detail-l">
                     <view class="detail-row">
                         <view class="field padding-lr">起</view>
-                        <view class="value text-black text-bold">{{item.start}}</view>                
+                        <view class="value text-black text-bold">{{item.data.start}}</view>                
                     </view>
                     <view class="detail-row">
                         <view class="field padding-lr">终</view>
-                        <view class="value text-black text-bold">{{item.end}}</view>                
+                        <view class="value text-black text-bold">{{item.data.end}}</view>                
                     </view>
                     <view class="detail-row">
                         <view class="field padding-lr">距</view>
-                        <view class="value text-black text-bold">{{item.distance}}</view>                
+                        <view class="value text-black text-bold">{{item.data.distance}}</view>                
                     </view>
                     <view class="detail-row">
                         <view class="field padding-lr">时</view>
-                        <view class="value text-black text-bold">{{item.duration}}</view>                
+                        <view class="value text-black text-bold">{{item.data.duration}}</view>                
                     </view>
                 </view>
                 <view class="detail-r">
-                    <view class="charge text-xxl text-price text-bold">{{item.charge}}</view>
+                    <view class="charge text-xxl text-price text-bold">{{item.data.charge}}</view>
                 </view>
             </view>
         </view>

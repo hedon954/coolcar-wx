@@ -23,6 +23,10 @@ swiper {
     display: flex;
 }
 
+.nav-container swiper {
+    width: 200rpx;
+}
+
 .trip {
     border-radius: 25rpx;
 }
@@ -48,3 +52,19 @@ swiper {
     font-style: italic;
 }
 
+.cur{
+    width: 8rpx;
+    border-radius: 10rpx 0 0 10rpx;
+    position: absolute;
+    background-color: currentColor;
+    top: 0;
+    right: 0rpx;
+    bottom: 0;
+    margin: auto;
+}
+
+.nav .cu-item {
+    margin: unset;
+    padding: unset;
+    text-align: center;
+}
