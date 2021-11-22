@@ -76,6 +76,15 @@ Page({
         if(this.timer) {
             clearInterval(this.timer)
         }
-    }
+    },
+
+    /**
+     * 结束行程
+     */
+    onEndTripTap(){
+        wx.redirectTo({
+            url: routing.mytrips()
+        })
+    },
 
 })
