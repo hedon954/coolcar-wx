@@ -1,5 +1,4 @@
 import * as $protobuf from "protobufjs";
-
 // Common aliases
 const $util = $protobuf.util;
 
