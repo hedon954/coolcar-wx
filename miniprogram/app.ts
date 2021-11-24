@@ -11,20 +11,6 @@ App<IAppOption>({
   },
   
   onLaunch() {
-
-    wx.request({
-      url: 'http://localhost:8080/trip/trip123',
-      method: 'GET',
-      success: res => {
-        const getTripRes = coolcar.GetTripResponse.fromObject(camelcaseKeys(res.data as object, {
-          deep: true,
-        }))
-        console.log(getTripRes)
-        console.log(coolcar.TripStatus[getTripRes.trip?.staus!])
-      },
-      fail: console.error
-    })
-
     const userInfo = wx.getStorageSync(userInfoKey) || undefined
     if(!userInfo) {
       // 获取用户信息
