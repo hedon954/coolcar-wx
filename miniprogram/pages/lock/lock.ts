@@ -1,3 +1,6 @@
+import { IAppOption } from "../../appoption"
+import { rental } from "../../service/proto_gen/rental/rental_pb"
+import { TripService } from "../../service/trip"
 import { routing } from "../../utils/routing"
 
 const shareLocationKey = "share_location"
@@ -74,6 +77,13 @@ Page({
                 })
 
                 // 创建行程
+                TripService.CreateTirp({
+                    start: 'abc',
+                } as rental.v1.CreateTripRequest)
+
+                return
+
+                // 创建行程
                 const tripID = 'trip456'
 
                 wx.showLoading({
@@ -93,7 +103,7 @@ Page({
             },
             fail: () => {
                 wx.showToast({
-                    icon: "error",
+                    icon: "none",
                     title: "请授权位置信息"
                 })
             }
