@@ -15,7 +15,7 @@ export namespace Coolcar {
     export interface RequestOption<REQ, RES> {
         method: 'GET' | 'POST' | 'PUT' | 'DELETE'
         path: string
-        data: REQ
+        data?: REQ
         respMarshaller: (r: object) => RES
     }
 
@@ -47,9 +47,6 @@ export namespace Coolcar {
         })
         authData.token = resq.accessToken!
         authData.expiryMs = reqTimeMs + resq.expiresIn! * 1000
-        console.log('login success, token: ' + authData.token)
-        console.log('expiryMs: ' + authData.expiryMs)
-        console.log('now: ' + Date.now())
     }
 
 
@@ -107,8 +104,6 @@ export namespace Coolcar {
                 }
             }
 
-            console.log('header: ' + header['authorization'])
-        
             // 发送请求
             wx.request({
                 url: serverAddr + o.path,

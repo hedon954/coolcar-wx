@@ -1,6 +1,7 @@
 import {formatDuration} from '../../utils/formatDuration'
 import {formartCharge} from '../../utils/formatCharge'
 import { routing } from '../../utils/routing'
+import { TripService } from '../../service/trip'
 
 // 一秒一分
 const centPerSec = 1
@@ -26,6 +27,7 @@ Page({
     onLoad(opt: Record<'trip_id', string>) {
         const o: routing.DrivingOpts = opt
         console.log('driving pages, tripID: ' + o.trip_id)
+        TripService.GetTrip(o.trip_id).then(console.log)
         this.setupLocationUpdator()
         this.setupTimer()
     },

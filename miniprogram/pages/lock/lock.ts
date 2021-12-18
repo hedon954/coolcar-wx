@@ -26,6 +26,7 @@ Page({
         const userInfo = getApp<IAppOption>().globalData.userInfo
         if(userInfo) {
             this.setData({
+                carID: o.car_id,
                 avatarURL: userInfo.avatarUrl,
                 shareLocation: wx.getStorageSync(shareLocationKey) || false
             })
@@ -65,26 +66,15 @@ Page({
         // 获取当前位置
         wx.getLocation({
             type: 'gcj02',
-            success: loc => {
-                // TODO: 发送当前位置信息给后端
-                console.log('starting a trip', {
-                    location: {
+            success: async loc => {
+                // 创建行程
+                const trip = await TripService.CreateTirp({
+                    start: {
                         latitude: loc.latitude,
-                        longitude: loc.longitude
+                        longitude: loc.longitude,
                     },
-                    avatarURL: this.data.shareLocation ? this.data.avatarURL : '',
-                    carID: this.data.carID,
-                })
-
-                // 创建行程
-                TripService.CreateTirp({
-                    start: 'abc',
+                    carId: this.data.carID,
                 } as rental.v1.CreateTripRequest)
-
-                return
-
-                // 创建行程
-                const tripID = 'trip456'
 
                 wx.showLoading({
                     title: '开锁中',
@@ -93,7 +83,7 @@ Page({
                 setTimeout(() => {
                     wx.redirectTo({
                         url: routing.driving({
-                            trip_id: tripID
+                            trip_id: trip.id
                         }),
                         complete: () => {
                             wx.hideLoading()
